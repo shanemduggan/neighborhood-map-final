@@ -1,0 +1,121 @@
+body {
+	background: #2980b9;
+	color: white;
+	height: 100%;
+	background: black;
+}
+
+html {
+	height: 100%;
+}
+
+h1 {
+	font-size: 20px;
+	color: black;
+}
+
+h3 {
+	font-size: 16px;
+}
+
+
+#map {
+	margin-left: 0%;
+	padding-left: 0%;
+	height: 84.3vh;
+}
+
+
+.site-header {
+	background: black;
+	color: white;
+}
+
+.main-nav {
+	list-style: none;
+	padding: 0;
+}
+
+.main-nav-item {
+	display: inline-block;
+	font-size: 1em;
+	border-bottom: none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 49%;
+}
+
+.main-nav-item:hover {
+	background: #2f97dc;
+	cursor: pointer;
+	background: white;
+	color: black;
+}
+
+.info-content {
+	color: black;
+}
+
+.info-content img {
+	display: block;
+	width: 120px;
+    float: left;
+    margin-right: 10px;
+}
+
+.info-content p {
+	margin-top: 1.5em;
+	font-size: 12px;
+}
+
+
+
+.main-nav {
+	padding-bottom: 5em;
+}
+.main-nav-item {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 33.33%;
+}
+
+h1 {
+	font-size: 36px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+.site-header {
+	padding: 24px 24px 24px 12px;
+	margin-bottom: 2em;
+}
+
+.main-nav {
+	padding-bottom: 2em;
+}
+
+.main-nav-item {
+	display: block;
+	font-size: 1.2em;
+	line-height: 2em;
+	border-bottom: 1px solid #3498db;
+	white-space: normal;
+	overflow: hidden;
+	width: 100%;
+	border-bottom: 1px solid white;
+	background: black;
+}
+
+.info-content p {
+	margin-top: 1.5em;
+	font-size: 1em;
+}
+
+.info-content img {
+	width: auto;
+	float: none;
+	margin-right: 0;
+}
