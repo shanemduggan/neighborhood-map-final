@@ -103,14 +103,9 @@ var ViewModel = function() {
 
 		// Saves index of location clicked
 		var index = self.filteredItems().indexOf(clickedLocation);
-		//console.log(index);
-
-		// Updates content for infowindow
-		self.updateContent(clickedLocation);
 
 		// Activates the selected marker to change icon.
-		// function(marker, context, infowindow, index)
-		self.activateMarker(self.markers[index], self, self.infowindow)();// Issue with list click. Possibly starting from here. Should be using 4 args
+		self.activateMarker(self.markers[index], self, self.infowindow, index)();
 
 		// Calls Foursquare function to update infowindow.
 		self.getFoursquareInfo(clickedLocation);
@@ -131,13 +126,25 @@ var ViewModel = function() {
 	    }
 	});
 
+
 	// Initialize Google Map
   	this.map = new google.maps.Map(document.getElementById('map'), {
-        	center: {lat: 34.088, lng: -118.3263},
+        	center: {lat: 34.0954, lng: -118.3198},
             zoom: 14,
 			mapTypeControl: false,
 			streetViewControl: false
         });
+		
+    // Center map on window resize
+	google.maps.event.addDomListener(window, "resize", function() {
+			var center = self.map.getCenter();
+			google.maps.event.trigger(this.map, "resize");
+			self.map.setCenter(center);
+		});
+		
+	// Add list to map
+	var list = (document.getElementById('list'));
+    this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(list);
 
   	// Array to hold markers
 	this.markers = [];
@@ -208,6 +215,7 @@ ViewModel.prototype.activateMarker = function(marker, context, infowindow, index
 
 		// Check if there is an index. If there is, request comes from click on the marker event
 		if (!isNaN(index)) {
+			
 			var place = context.filteredItems()[index];
 			
 			// Updates infowindow content if description not updated
@@ -219,10 +227,17 @@ ViewModel.prototype.activateMarker = function(marker, context, infowindow, index
 		infowindow.close();
 
 		// Wait for Foursquare info and then open targeted infowindow.
-		// Need to re-work this
+		// Set marker animation
+		// Add promise/event on API request finish.
 		setTimeout(function() {
 			infowindow.open(context.map, marker);
-		}, 400);
+			marker.setAnimation(google.maps.Animation.BOUNCE);
+		}, 600);
+
+		// Stop marker animation
+		setTimeout(function() {
+			marker.setAnimation(null);
+		}, 1550);
 	};
 };
 
@@ -254,8 +269,9 @@ var clientSecret = '0HNJERN1UEUFI5NL0OLKM3RIQH4PDZQLW2ZRKOCYHHQGJ4YS';
  ViewModel.prototype.getFoursquareInfo = function(point) {
 	 
     // Create Foursquare URL from clicked marker
-    var foursquareURL = 'https://api.foursquare.com/v2/venues/search?client_id=' + clientID + '&client_secret=' + clientSecret + '&v=20150321' + '&ll=' +point.lat+ ',' +point.lng+ '&query=\'' +point.name +'\'&limit=1';
-    
+    var foursquareURL = 'https://api.foursquare.com/v2/venues/search?client_id=' + clientID + '&client_secret=' + 
+	clientSecret + '&v=20150321' + '&ll=' +point.lat+ ',' +point.lng+ '&query=\'' +point.name +'\'&limit=1';
+	
     $.getJSON(foursquareURL)
       .done(function(response) {
 		self.foursquareInfo = '<p>';
@@ -268,9 +284,12 @@ var clientSecret = '0HNJERN1UEUFI5NL0OLKM3RIQH4PDZQLW2ZRKOCYHHQGJ4YS';
             } else {
               self.foursquareInfo += 'Phone: Not Found';
             }
-		self.foursquareInfo += '<p>Information provided by Foursquare API';				
-      });	  
+		self.foursquareInfo += '<p>Information via the Foursquare API';				
+      }).fail(function() {
+		  self.foursquareInfo = 'Additional information failed to load';
+	  })	
   };  
+  
 
 
   
